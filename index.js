@@ -6,6 +6,9 @@ const Manager = require("./lib/manager");
 const Intern = require("./lib/intern");
 const team = [];
 
+const ENGINEER_TITLE = "Engineer";
+const INTERN_TITLE = "Intern";
+
 //confirm function
 const confirm = (team) => {
 
@@ -23,11 +26,11 @@ const confirm = (team) => {
                 // fs.writeFile("./dist/index.html", cards, (err) =>
                 //     err ? console.log(err) : console.log("File created!"));
             } else {
-                employeeCreate();
+                promptEmployeeCreate();
             }
         })
 };
-const employeeCreate = () => {
+const promptEmployeeCreate = () => {
     inquirer
         .prompt([
             {
@@ -35,77 +38,61 @@ const employeeCreate = () => {
                 name: "createRole",
                 message: "Select team member role:",
                 choices: [
-                    "Engineer",
-                    "Intern"
+                    ENGINEER_TITLE,
+                    INTERN_TITLE,
                 ]
             }])
         .then(ans => {
-            if (ans.createRole === "Engineer") {
-                createEngineer();
-            } else {
-                createIntern();
-            }
+            createEmployee(ans.createRole);
         });
 };
 //See if you can change "employee" to whatever createRole choice is for better user experience
-const createEngineer = () => {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "name",
-                message: "What is the name of your engineer"
-            },
-            {
-                type: "input",
-                name: "id",
-                message: "What is your engineer's employee ID?"
-            },
-            {
-                type: "input",
-                name: "email",
-                message: "What is your engineer's email?"
-            },
+const createEmployee = (roleTitle) => {
+    const roleTitleLower = roleTitle.toLowerCase();
+    prompts = [];
+
+    prompts.push(
+        {
+            type: "input",
+            name: "name",
+            message: "What is the name of your " + roleTitleLower + "?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your " + roleTitleLower + "'s employee ID?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your " + roleTitleLower + "'s email?"
+        })
+
+    if (roleTitle === ENGINEER_TITLE) {
+        prompts.push(
             {
                 type: "input",
                 name: "github",
-                message: "What is your engineer's github username?"
-            }
-        ])
-        .then(ans => {
-            const anEngineer = new Engineer(ans.name, ans.id, ans.email, ans.github);
-            team.push(anEngineer);
-            confirm();
-        })
-};
-
-const createIntern = () => {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "name",
-                message: "What is the name of your intern?"
-            },
-            {
-                type: "input",
-                name: "id",
-                message: "What is your intern's employee ID?"
-            },
-            {
-                type: "input",
-                name: "email",
-                message: "What is your intern's email?"
-            },
+                message: "What is your " + roleTitleLower + "'s github username?"
+            });
+    } else {
+        prompts.push(
             {
                 type: "input",
                 name: "school",
-                message: "What school does your intern attend?"
-            }
-        ])
+                message: "What school does your " + roleTitleLower + " attend?"
+            });
+    }
+
+    inquirer
+        .prompt(prompts)
         .then(ans => {
-            const anIntern = new Intern(ans.name, ans.id, ans.email, ans.school);
-            team.push(anIntern);
+            if (roleTitle === ENGINEER_TITLE) {
+                anEmployee = new Engineer(ans.name, ans.id, ans.email, ans.github);
+            } else {
+                anEmployee = new Intern(ans.name, ans.id, ans.email, ans.school);
+            }
+            team.push(anEmployee);
             confirm();
         })
 };
