@@ -1,0 +1,7 @@
+.myNavbar {
+    display: flex;
+    justify-content: center;
+    min-height: 150px;
+    font-size: 500%;
+    color: lightblue;
+}

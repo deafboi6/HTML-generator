@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const fs = require("fs");
 const Employee = require("./lib/employee");
 const Engineer = require("./lib/engineer");
 const Manager = require("./lib/manager");
@@ -6,18 +7,21 @@ const Intern = require("./lib/intern");
 const team = [];
 
 //confirm function
-const confirm = () => {
-    inquirer   
+const confirm = (team) => {
+
+    inquirer
         .prompt([
             {
                 type: "confirm",
                 name: "addEmployee",
                 message: "Do you want to add another employee?"
             }])
-            .then(ans => {
+            .then((ans) => {
                 if (!ans.addEmployee) {
-                    //Add file write here
-                    console.log("add a File here");
+                    // console.log(team);
+                    buildTeam();
+                    // fs.writeFile("./dist/index.html", cards, (err) =>
+                    //     err ? console.log(err) : console.log("File created!"));
                 } else {
                     employeeCreate();
                 }
@@ -50,27 +54,28 @@ const createEngineer = () => {
             {
                 type: "input",
                 name: "name",
-                message: `What is the name of your employee`
+                message: "What is the name of your engineer"
             },
             {
                 type: "input",
                 name: "id",
-                message: "What is your employee's ID?"
+                message: "What is your engineer's employee ID?"
             },
             {
                 type: "input",
                 name: "email",
-                message: "What is your employee's email?"
+                message: "What is your engineer's email?"
             },
             {
                 type: "input",
                 name: "github",
-                message: "What is your Engineer's github username?"
+                message: "What is your engineer's github username?"
             }
         ])
             .then(ans => {
-                    const anEngineer = new Engineer(ans.name, ans.id, ans.email, github);
+                    const anEngineer = new Engineer(ans.name, ans.id, ans.email, ans.github);
                     team.push(anEngineer);
+                    confirm();
             })
         };
 
@@ -85,7 +90,7 @@ const createIntern = () => {
             {
                 type: "input",
                 name: "id",
-                message: "What is your intern's ID?"
+                message: "What is your intern's employee ID?"
             },
             {
                 type: "input",
@@ -99,11 +104,55 @@ const createIntern = () => {
             }
         ])
             .then(ans => {
-                    const anIntern = new Intern(ans.name, ans.id, ans.email, school);
+                    const anIntern = new Intern(ans.name, ans.id, ans.email, ans.school);
                     team.push(anIntern);
+                    confirm();
             })
         };
 
+    function buildTeam() {
+        
+        let employeeHTML = team
+            .map((member) => {
+                return `<div class="card" style="width: 18rem; height: 18rem">
+                    <img src="./images/stock-${member.getRole()}-photo.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title">${member.name}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Role: ${member.getRole()}</li>
+                    <li class="list-group-item">Employee ID: ${member.id}</li>
+                    <li class="list-group-item">Email: ${member.email}</li>
+                    <li class="list-group-item">${member.getExtra()}</li>
+                    </ul>
+            </div>`;
+            })
+            .join("\n");
+        
+            let HTML =
+`<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        <title>Hello, world!</title>
+    </head>
+
+    <body class="d-flex p-2 bd-highlight">
+    ${employeeHTML}
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    </body>
+</html>`;
+            fs.writeFile("./dist/index.html", HTML, (err) => {
+            console.log("Team Generated");
+            });
+            console.log(team);
+        }
+
+//Code starts here!
 inquirer
     .prompt([
         {
@@ -130,8 +179,5 @@ inquirer
         .then(answers => {
             const theManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.officeNumber);
             team.push(theManager);
+            confirm();
         });
-
-confirm();
-
-
