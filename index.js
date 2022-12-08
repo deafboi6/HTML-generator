@@ -16,17 +16,17 @@ const confirm = (team) => {
                 name: "addEmployee",
                 message: "Do you want to add another employee?"
             }])
-            .then((ans) => {
-                if (!ans.addEmployee) {
-                    // console.log(team);
-                    buildTeam();
-                    // fs.writeFile("./dist/index.html", cards, (err) =>
-                    //     err ? console.log(err) : console.log("File created!"));
-                } else {
-                    employeeCreate();
-                }
-            })
-        };
+        .then((ans) => {
+            if (!ans.addEmployee) {
+                // console.log(team);
+                buildTeam();
+                // fs.writeFile("./dist/index.html", cards, (err) =>
+                //     err ? console.log(err) : console.log("File created!"));
+            } else {
+                employeeCreate();
+            }
+        })
+};
 const employeeCreate = () => {
     inquirer
         .prompt([
@@ -39,17 +39,17 @@ const employeeCreate = () => {
                     "Intern"
                 ]
             }])
-            .then(ans => {
-                if (ans.createRole === "Engineer") {
-                    createEngineer();
-                } else {
-                    createIntern();
-                }
-            });
-        };
-            //See if you can change "employee" to whatever createRole choice is for better user experience
+        .then(ans => {
+            if (ans.createRole === "Engineer") {
+                createEngineer();
+            } else {
+                createIntern();
+            }
+        });
+};
+//See if you can change "employee" to whatever createRole choice is for better user experience
 const createEngineer = () => {
-    inquirer   
+    inquirer
         .prompt([
             {
                 type: "input",
@@ -72,15 +72,15 @@ const createEngineer = () => {
                 message: "What is your engineer's github username?"
             }
         ])
-            .then(ans => {
-                    const anEngineer = new Engineer(ans.name, ans.id, ans.email, ans.github);
-                    team.push(anEngineer);
-                    confirm();
-            })
-        };
+        .then(ans => {
+            const anEngineer = new Engineer(ans.name, ans.id, ans.email, ans.github);
+            team.push(anEngineer);
+            confirm();
+        })
+};
 
 const createIntern = () => {
-    inquirer   
+    inquirer
         .prompt([
             {
                 type: "input",
@@ -103,18 +103,18 @@ const createIntern = () => {
                 message: "What school does your intern attend?"
             }
         ])
-            .then(ans => {
-                    const anIntern = new Intern(ans.name, ans.id, ans.email, ans.school);
-                    team.push(anIntern);
-                    confirm();
-            })
-        };
+        .then(ans => {
+            const anIntern = new Intern(ans.name, ans.id, ans.email, ans.school);
+            team.push(anIntern);
+            confirm();
+        })
+};
 
-    function buildTeam() {
-        
-        let employeeHTML = team
-            .map((member) => {
-                return `<div class="card" style="width: 18rem; height: 18rem">
+function buildTeam() {
+
+    let employeeHTML = team
+        .map((member) => {
+            return `<div class="card" style="width: 18rem; height: 18rem">
                     <img src="./images/stock-${member.getRole()}-photo.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                     <h5 class="card-title">${member.name}</h5>
@@ -126,11 +126,11 @@ const createIntern = () => {
                     <li class="list-group-item">${member.getExtra()}</li>
                     </ul>
             </div>`;
-            })
-            .join("\n");
-        
-            let HTML =
-`<!doctype html>
+        })
+        .join("\n");
+
+    let HTML =
+        `<!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -146,11 +146,11 @@ const createIntern = () => {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     </body>
 </html>`;
-            fs.writeFile("./dist/index.html", HTML, (err) => {
-            console.log("Team Generated");
-            });
-            console.log(team);
-        }
+    fs.writeFile("./dist/index.html", HTML, (err) => {
+        console.log("Team Generated");
+    });
+    console.log(team);
+}
 
 //Code starts here!
 inquirer
@@ -176,8 +176,8 @@ inquirer
             message: "What is your Manager's office number?"
         }
     ])
-        .then(answers => {
-            const theManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.officeNumber);
-            team.push(theManager);
-            confirm();
-        });
+    .then(answers => {
+        const theManager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.officeNumber);
+        team.push(theManager);
+        confirm();
+    });
