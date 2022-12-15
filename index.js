@@ -103,9 +103,9 @@ function buildTeam() {
                     <h5 class="card-title">${member.name}</h5>
                     </div>
                     <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Role: <strong>${member.getRole()}<strong></li>
-                    <li class="list-group-item">Employee ID: ${member.id}</li>
-                    <li class="list-group-item">Email: ${member.email}</li>
+                    <li class="list-group-item"><strong>Role:</strong> ${member.getRole()}</li>
+                    <li class="list-group-item"><strong>Employee ID:</strong> ${member.id}</li>
+                    <li class="list-group-item"><strong>Email:</strong> ${member.email}</li>
                     <li class="list-group-item">${member.getExtra()}</li>
                     </ul>
             </div>`;
