@@ -12,6 +12,11 @@ Once the questions have all been answered, a simple and easy to read HTML file i
 
 Simply download the repository, run "npm i" in the terminal (make sure you are in your new folder when you run this!), then run "node.js". After that, follow the prompts until you're done making employees. Finally, open the index.html file!
 
+https://youtu.be/vFZVwmUxwSQ
+
+![image](https://user-images.githubusercontent.com/110741444/214756322-cbf7e2fb-4cf6-41d8-9cd6-9b146b1f8e0d.png)
+
+
 ## Credits
 
 My instructor John Young and a few of the TAs, namely Nick and Angela for helping me understand concepts.
